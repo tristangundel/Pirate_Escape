@@ -9,8 +9,10 @@ private:
   bool isItem;
 public:
   Tool();
-  Tool(std::string);
   std::string getToolName();
+  void setToolName(std::string);
+  void setIsItem(bool);
+  bool getIsItem();
 };
 
 #endif

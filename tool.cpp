@@ -18,12 +18,22 @@ Tool::Tool()
   this->isItem = false;
 }
 
-Tool::Tool(std::string name)
+std::string Tool::getToolName()
+{
+  return this->toolName;
+}
+
+void Tool::setToolName(std::string name)
 {
   this->toolName = name;
 }
 
-std::string Tool::getToolName()
+void Tool::setIsItem(bool item)
 {
-  return this->toolName;
+  this->isItem = item;
+}
+
+bool Tool::getIsItem()
+{
+  return this->isItem;
 }

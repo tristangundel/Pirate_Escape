@@ -1,7 +1,7 @@
 /*********************************************************************
 ** Program name: PirateEscape
 ** Author: Tristan Gundel
-** Date: 12/04/2018
+** Date: 09/19/2019
 ** Description: This file is one of 19 files that together form a
 **              program with the capability of running a sinle player
 **              pirate themed escape room game where the user will
@@ -13,24 +13,48 @@
 #include "board.hpp"
 #include "space.hpp"
 
-void introMessage();
+void introMessage(int);
 
 int main()
 {
   //initialize step limit and boolean to indicate the game was won
   int numOfSteps = 50;
-  bool winner = false;
 
   //initialize menu for user options
   std::string userOptions[4];
-  userOptions
+  userOptions[0] = "Move Up";
+  userOptions[1] = "Move Right";
+  userOptions[2] = "Move Left";
+  userOptions[3] = "Move Down";
+  Menu *directionMenuPtr = new Menu(4, &userOptions[0]);
 
   //initialize containers for items and hints
-
+  Queue *itemList = new Queue;
+  Queue *hintList = new Queue;
 
   introMessage(numOfSteps);
   Board gameBoard;
-  gameBoard.printBoard();
+
+  while(numOfSteps > 0 && !gameBoard.gameWon())
+  {
+    gameBoard.printBoard();
+    Space *currentPlace = gameBoard.findPlayer();
+    currentPlace->spaceFunction(hintList, itemList);
+    gameBoard.movePlayer(directionMenuPtr);
+    numOfSteps--;
+
+  }
+
+  if (gameBoard.gameWon())
+  {
+    std::cout << "Ye escaped. Congratulations matey!" << std::endl;
+  }
+  else
+  {
+    std::cout << "You failed to escape. I guess it's Davey Jones' locker for ye.\n"
+              << "Better luck next time!" << std::endl;
+  }
+
   return 0;
 }
 
@@ -50,7 +74,7 @@ void introMessage(int num)
             << "could aid in yer escape, so move around the board and take a\n"
             << "look around. There are two locked doors in between you and yer\n"
             << "freedom, and they're marked with the double lined edge ('||')\n"
-            << "Ye have " << num << " moves to escape.\n";
+            << "Ye have " << num << " moves to escape.\n"
             << "Good luck ye scallywag!\n" << std::endl;
 
 }

@@ -1,6 +1,7 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
 #include "space.hpp"
+#include "menu.hpp"
 
 class Board
 {
@@ -9,9 +10,9 @@ class Board
   public:
     Board();
     Space* findPlayer();
-    void movePlayer(int);
+    void movePlayer(Menu *movingMenu);
     void printBoard();
-    bool gameOver();
+    bool gameWon();
     ~Board();
 };
 #endif

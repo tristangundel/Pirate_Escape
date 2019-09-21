@@ -20,8 +20,8 @@ Space::Space()
   setLeft(nullptr);
   setBottom(nullptr);
   setMessage("This message will never be seen");
-  this->player = false;
-  this->actionRequired = false;
+  setType("None");
+  setPlayerStatus(false);
 }
 
 //set function for top pointer variable
@@ -75,6 +75,11 @@ void Space::setMessage(std::string note)
   this->message = note;
 }
 
+std::string Space::getMessage()
+{
+  return this->message;
+}
+
 //function to display message
 void Space::displayMessage()
 {
@@ -94,17 +99,39 @@ bool Space::hasPlayer()
   }
 }
 
-void Space::changePlayerStatus(bool status)
+std::string Space::getSpaceType()
+{
+  return this->type;
+}
+
+void Space::setPlayerStatus(bool status)
 {
   this->player = status;
 }
 
-bool Space::isActionSpace()
+void Space::setType(std::string spaceType)
 {
-  return this->actionRequired;
+  this->type = spaceType;
 }
 
 void Space::printSpace()
 {
-  std::cout << "       ";
+  if (hasPlayer())
+  {
+    std::cout << "   X   ";
+  }
+  else
+  {
+    std::cout << "       ";
+  }
+}
+
+bool Space::getActionRequired()
+{
+  return this-> actionRequired;
+}
+
+void Space::setActionRequired(bool action)
+{
+  this->actionRequired = action;
 }

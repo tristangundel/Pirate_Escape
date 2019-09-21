@@ -9,3 +9,15 @@
 **              use to get out of the room.
 *********************************************************************/
 #include "item.hpp"
+
+Item::Item()
+: Tool()
+{
+  setIsItem(true);
+}
+
+Item::Item(std::string name)
+{
+  setToolName(name);
+  setIsItem(true);
+}

@@ -13,6 +13,7 @@ class Space
     std::string type;
     std::string message;
     bool player;
+    bool actionRequired;
   public:
     Space();
     void setTop(Space*);
@@ -25,11 +26,15 @@ class Space
     Space* getBottom();
     std::string getSpaceType();
     void setMessage(std::string);
+    std::string getMessage();
     void displayMessage();
     bool hasPlayer();
-    void changePlayerStatus(bool);
+    void setPlayerStatus(bool);
+    void setType(std::string);
     virtual void printSpace();
-    virtual void spaceFunction(Queue &hints, Queue &items) = 0;
+    bool getActionRequired();
+    void setActionRequired(bool);
+    virtual void spaceFunction(Queue *hints, Queue *items) = 0;
 };
 
 #endif

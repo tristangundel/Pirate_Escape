@@ -11,30 +11,36 @@
 #include <iostream>
 #include <string>
 #include "board.hpp"
+#include "space.hpp"
 #include "actionSpace.hpp"
 #include "doorSpace.hpp"
 #include "toolSpace.hpp"
+//#include "parrotSpace.hpp"
 
 Board::Board()
 {
-  theBoard[0][0] = new ToolSpace(toolSpace1);
-  theBoard[0][1] = new ToolSpace(toolSpace2);
-  theBoard[0][2] = new ToolSpace(toolSpace3);
-  theBoard[0][3] = new DoorSpace(doorSpace);
-  (theBoard[0][3])->changePlayerStatus(true);
-  theBoard[0][4] = new ToolSpace(toolSpace4);
-  theBoard[0][5] = new ParrotSpace(parrotSpace);
-  theBoard[0][6] = new DoorSpace(doorSpace);
-  theBoard[1][0] = new ActionSpace(actionSpace1);
-  theBoard[1][1] = new ToolSpace(toolSpace5);
-  theBoard[1][2] = new ToolSpace(toolSpace6);
-  theBoard[1][3] = new ActionSpace(actionSpace2);
-
-  (theBoard[0][0])->setRight(theBoard[0][1]);
-  (theBoard[0][0])->setBottom(theBoard[1][0]);
-  for (int c=0; c<7; c++)
+  for (int r=0; r<2; r++)
   {
-    if (c != 6)
+    for (int c=0; c<7; c++)
+    {
+      theBoard[r][c] = nullptr;
+    }
+  }
+
+  theBoard[0][0] = new ToolSpace(1);
+  theBoard[0][1] = new ToolSpace(2);
+  theBoard[0][2] = new ToolSpace(3);
+  theBoard[0][3] = new DoorSpace();
+  (theBoard[0][3])->setPlayerStatus(true);
+  theBoard[1][0] = new ActionSpace(1);
+  theBoard[1][1] = new ToolSpace(5);
+  theBoard[1][2] = new ToolSpace(6);
+  theBoard[1][3] = new ActionSpace(2);
+
+  //set up linked structure
+  for (int c=0; c<4; c++)
+  {
+    if (c != 4)
     {
       (theBoard[0][c])->setRight(theBoard[0][c+1]);
     }
@@ -49,14 +55,75 @@ Board::Board()
     (theBoard[1][c])->setTop(theBoard[0][c]);
     if (c != 4)
     {
-      (theBoard[0][c])->setRight(theBoard[0][c+1]);
+      (theBoard[1][c])->setRight(theBoard[1][c+1]);
     }
     if (c != 0)
     {
-      (theBoard[0][c])->setLeft(theBoard[0][c-1]);
+      (theBoard[1][c])->setLeft(theBoard[1][c-1]);
     }
   }
 
+}
+
+void Board::movePlayer(Menu *movingMenu)
+{
+  bool hasMoved = false;
+  Space* currentPlace = findPlayer();
+  while (!hasMoved)
+  {
+    movingMenu->printMenu();
+    movingMenu->makeSelection();
+    int direction = movingMenu->getSelection();
+
+    //move up
+    if (direction == 1 && currentPlace->getTop() != nullptr)
+    {
+      (currentPlace->getTop())->setPlayerStatus(true);
+      currentPlace->setPlayerStatus(false);
+      hasMoved = true;
+    }
+    //move right
+    else if (direction == 2 && currentPlace->getRight() != nullptr)
+    {
+      if (currentPlace->getSpaceType() != "Door")
+      {
+        (currentPlace->getRight())->setPlayerStatus(true);
+        currentPlace->setPlayerStatus(false);
+        hasMoved = true;
+      }
+      else
+      {
+        if (currentPlace->getActionRequired())
+        {
+          std::cout << "That was not a valid move, please try again." << std::endl;
+        }
+        else
+        {
+          (currentPlace->getRight())->setPlayerStatus(true);
+          currentPlace->setPlayerStatus(false);
+          hasMoved = true;
+        }
+      }
+    }
+    //move left
+    else if (direction == 3 && currentPlace->getLeft() != nullptr)
+    {
+      (currentPlace->getLeft())->setPlayerStatus(true);
+      currentPlace->setPlayerStatus(false);
+      hasMoved = true;
+    }
+    //move down
+    else if (direction == 4 && currentPlace->getBottom() != nullptr)
+    {
+      (currentPlace->getBottom())->setPlayerStatus(true);
+      currentPlace->setPlayerStatus(false);
+      hasMoved = true;
+    }
+    else
+    {
+      std::cout << "That was not a valid move, please try again." << std::endl;
+    }
+  }
 }
 
 Space* Board::findPlayer()
@@ -87,9 +154,7 @@ void Board::printBoard()
   for (int c=0; c<7; c++)
   {
     std::cout << "|";
-    //Space* tempPointer = theBoard[0][c];
-    //tempPointer->printBoard
-    std::cout << "       ";
+    (theBoard[0][c])->printSpace();
   }
   std::cout << "|" << std::endl;
   std::cout << "|       |       |       |       |       |       |       |" << std::endl;
@@ -103,9 +168,7 @@ void Board::printBoard()
   for (int c=0; c<4; c++)
   {
     std::cout << "|";
-    //Space* tempPointer = theBoard[0][c];
-    //tempPointer->printBoard
-    std::cout << "       ";
+    (theBoard[1][c])->printSpace();
   }
   std::cout << "|" << std::endl;
   std::cout << "|       |       |       |       |" << std::endl;
@@ -117,7 +180,7 @@ void Board::printBoard()
   std::cout << "\n" << std::endl;
 }
 
-bool Board::gameOver()
+bool Board::gameWon()
 {
   bool isOver = true;
   for (int c=0; c<7; c++)
@@ -125,8 +188,7 @@ bool Board::gameOver()
       Space* tempPtr = theBoard[0][c];
       if (tempPtr->getSpaceType() == "Door")
       {
-        DoorSpace tempDoorPtr = tempPtr;
-        if (tempDoorPtr->getLocked())
+        if (tempPtr->getActionRequired())
         {
           isOver = false;
         }

@@ -43,6 +43,11 @@ bool Queue::isEmpty()
   }
 }
 
+int Queue::getLength()
+{
+  return this->length;
+}
+
 //This function will add a new node to the back of the queue
 void Queue::addBack(Tool* toolPtr)
 {

@@ -9,3 +9,15 @@
 **              use to get out of the room.
 *********************************************************************/
 #include "hint.hpp"
+
+Hint::Hint()
+: Tool()
+{
+  setIsItem(false);
+}
+
+Hint::Hint(std::string name)
+{
+  setToolName(name);
+  setIsItem(false);
+}

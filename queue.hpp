@@ -21,6 +21,7 @@ class Queue
     void addBack(Tool*);
     QueueNode* getHead();
     Tool* getFront();
+    int getLength();
     void removeFront();
     void deleteFront();
     void printQueue();

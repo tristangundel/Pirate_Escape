@@ -2,18 +2,14 @@
 #define DOORSPACE_HPP
 #include <string>
 #include "space.hpp"
+#include "actionSpace.hpp"
 
-class DoorSpace : public Space
+class DoorSpace : public ActionSpace
 {
-  private:
-    bool locked;
   public:
     DoorSpace();
-    virtual void printBoard();
-    void setLocked();
-    bool getLocked();
-    void unLockDoor(std::string);
-    void spaceFunction(Queue &hints, Queue &items);
+    void printSpace();
+    void spaceFunction(Queue *hints, Queue *items);
 };
 
 #endif
