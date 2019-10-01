@@ -12,8 +12,9 @@
 #include "tool.hpp"
 #include "item.hpp"
 #include "hint.hpp"
-#include "queue.hpp"
 #include "menu.hpp"
+#include "inputValidation.hpp"
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -75,7 +76,7 @@ Tool *ToolSpace::getTool()
   return this->toolInSpace;
 }
 
-void ToolSpace::spaceFunction(Queue *hints, Queue *items)
+void ToolSpace::spaceFunction(std::vector<Tool*>& hints, std::vector<Tool*>& items)
 {
   std::string menuOptions[2];
   menuOptions[0] = "Investigate it!";
@@ -91,19 +92,27 @@ void ToolSpace::spaceFunction(Queue *hints, Queue *items)
     {
       if (!(this->toolInSpace)->getIsItem())
       {
-        std::cout << "The words " << (this->toolInSpace)->getToolName()
+        std::cout << "\nThe words " << (this->toolInSpace)->getToolName()
                   << " were " << this->container << "\nThis message was added to "
                   << "your Hints container." << std::endl;
-        hints->addBack(this->toolInSpace);
+        hints.push_back(this->toolInSpace);
+        this->setMessage("There is nothing to do in this space");
       }
       else if ((this->toolInSpace)->getIsItem())
       {
-        std::cout << "You found a " << (this->toolInSpace)->getToolName()
-                  << "in the " << this->container << "\n This item was added to "
+        std::cout << "\nYou found a " << (this->toolInSpace)->getToolName()
+                  << " in the " << this->container << "\n This item was added to "
                   << "your item container." << std::endl;
-        items->addBack(this->toolInSpace);
+        items.push_back(this->toolInSpace);
+        this->setMessage("There is nothing to do in this space");
       }
     }
   }
 
+}
+
+ToolSpace::~ToolSpace()
+{
+  toolInSpace = nullptr;
+  delete this;
 }

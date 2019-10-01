@@ -13,6 +13,6 @@ class Board
     void movePlayer(Menu *movingMenu);
     void printBoard();
     bool gameWon();
-    ~Board();
+    //~Board();
 };
 #endif

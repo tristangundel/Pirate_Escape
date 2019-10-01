@@ -122,33 +122,6 @@ void Queue::deleteFront()
   }
 }
 
-//Remove the node at the front of the queue
-void Queue::removeFront()
-{
-  if (this->isEmpty())
-  {
-    std::cout << "\nSorry, the queue is empty so there is nothing to remove!\n"
-              << std::endl;
-  }
-  else
-  {
-    QueueNode* tempNode = this->head;
-    QueueNode* prevNode = tempNode->previous;
-    QueueNode* nextNode = tempNode->next;
-    if (tempNode->next != this->head && prevNode != this->head)
-    {
-      delete tempNode;
-      prevNode->next = nextNode;
-      this->head = nextNode;
-      nextNode->previous = prevNode;
-    }
-    else
-    {
-      delete this->head;
-      this->head = nullptr;
-    }
-  }
-}
 
 //This function will print the contents within each node of the queue once
 void Queue::printQueue()

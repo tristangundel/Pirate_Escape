@@ -22,7 +22,6 @@ class Queue
     QueueNode* getHead();
     Tool* getFront();
     int getLength();
-    void removeFront();
     void deleteFront();
     void printQueue();
     void advanceHead();

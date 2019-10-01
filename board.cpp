@@ -15,7 +15,7 @@
 #include "actionSpace.hpp"
 #include "doorSpace.hpp"
 #include "toolSpace.hpp"
-//#include "parrotSpace.hpp"
+#include "parrotSpace.hpp"
 
 Board::Board()
 {
@@ -30,17 +30,20 @@ Board::Board()
   theBoard[0][0] = new ToolSpace(1);
   theBoard[0][1] = new ToolSpace(2);
   theBoard[0][2] = new ToolSpace(3);
-  theBoard[0][3] = new DoorSpace();
+  theBoard[0][3] = new DoorSpace(1);
   (theBoard[0][3])->setPlayerStatus(true);
+  theBoard[0][4] = new ToolSpace(4);
+  theBoard[0][5] = new ParrotSpace();
+  theBoard[0][6] = new DoorSpace(2);
   theBoard[1][0] = new ActionSpace(1);
   theBoard[1][1] = new ToolSpace(5);
   theBoard[1][2] = new ToolSpace(6);
   theBoard[1][3] = new ActionSpace(2);
 
   //set up linked structure
-  for (int c=0; c<4; c++)
+  for (int c=0; c<7; c++)
   {
-    if (c != 4)
+    if (c != 6)
     {
       (theBoard[0][c])->setRight(theBoard[0][c+1]);
     }
@@ -62,7 +65,6 @@ Board::Board()
       (theBoard[1][c])->setLeft(theBoard[1][c-1]);
     }
   }
-
 }
 
 void Board::movePlayer(Menu *movingMenu)
@@ -140,6 +142,7 @@ Space* Board::findPlayer()
       }
     }
   }
+  return nullptr;
 }
 
 void Board::printBoard()
@@ -185,29 +188,14 @@ bool Board::gameWon()
   bool isOver = true;
   for (int c=0; c<7; c++)
   {
-      Space* tempPtr = theBoard[0][c];
-      if (tempPtr->getSpaceType() == "Door")
-      {
-        if (tempPtr->getActionRequired())
-        {
-          isOver = false;
-        }
-      }
-  }
-  return isOver;
-}
-
-Board::~Board()
-{
-  for (int r=0; r<2; r++)
-  {
-    for (int c=0; c<7; c++)
+    Space* tempPtr = theBoard[0][c];
+    if (tempPtr->getSpaceType() == "Door")
     {
-      if (theBoard[r][c] != nullptr)
+      if (tempPtr->getActionRequired())
       {
-        delete theBoard[r][c];
+        isOver = false;
       }
     }
   }
-
+  return isOver;
 }

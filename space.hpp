@@ -1,15 +1,16 @@
 #ifndef SPACE_HPP
 #define SPACE_HPP
 #include <string>
-#include "queue.hpp"
+#include <vector>
+#include "tool.hpp"
 
 class Space
 {
   private:
     Space *top;
     Space *right;
-    Space* left;
-    Space* bottom;
+    Space *left;
+    Space *bottom;
     std::string type;
     std::string message;
     bool player;
@@ -34,7 +35,9 @@ class Space
     virtual void printSpace();
     bool getActionRequired();
     void setActionRequired(bool);
-    virtual void spaceFunction(Queue *hints, Queue *items) = 0;
+    virtual void spaceFunction(std::vector<Tool*>& hints, std::vector<Tool*>& items) = 0;
+    void printList(std::vector<Tool*> list);
+    virtual ~Space() = 0;
 };
 
 #endif

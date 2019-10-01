@@ -38,7 +38,6 @@ bool validateInput(std::string input, int low, int high)
   }
   else
   {
-    std::cout << "That input was not valid, please try again" << std::endl;
     return false;
   }
 }

@@ -1,6 +1,7 @@
 #ifndef ACTION_SPACE_HPP
 #define ACTION_SPACE_HPP
 #include "space.hpp"
+#include <vector>
 #include <string>
 
 class ActionSpace : public Space
@@ -14,8 +15,11 @@ public:
   ActionSpace(int);
   void setRequiredTool(std::string);
   void setSuccessMessage(std::string);
+  std::string getSuccessMessage();
   void setRetrievedTool(Tool *tool);
   std::string getRequiredTool();
-  virtual void spaceFunction(Queue *hints, Queue *items);
+  Tool* getRetrievedTool();
+  virtual void spaceFunction(std::vector<Tool*>& hints, std::vector<Tool*>& items);
+  virtual ~ActionSpace();
 };
 #endif

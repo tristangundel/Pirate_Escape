@@ -10,6 +10,7 @@
 *********************************************************************/
 #include <iostream>
 #include <string>
+#include <vector>
 #include "board.hpp"
 #include "space.hpp"
 
@@ -18,7 +19,7 @@ void introMessage(int);
 int main()
 {
   //initialize step limit and boolean to indicate the game was won
-  int numOfSteps = 50;
+  int numOfSteps = 30;
 
   //initialize menu for user options
   std::string userOptions[4];
@@ -29,29 +30,30 @@ int main()
   Menu *directionMenuPtr = new Menu(4, &userOptions[0]);
 
   //initialize containers for items and hints
-  Queue *itemList = new Queue;
-  Queue *hintList = new Queue;
+  std::vector<Tool*> itemList;
+  std::vector<Tool*> hintList;
 
   introMessage(numOfSteps);
   Board gameBoard;
-
   while(numOfSteps > 0 && !gameBoard.gameWon())
   {
     gameBoard.printBoard();
     Space *currentPlace = gameBoard.findPlayer();
     currentPlace->spaceFunction(hintList, itemList);
-    gameBoard.movePlayer(directionMenuPtr);
+    if (!gameBoard.gameWon()){
+      gameBoard.movePlayer(directionMenuPtr);
+    }
     numOfSteps--;
 
   }
 
   if (gameBoard.gameWon())
   {
-    std::cout << "Ye escaped. Congratulations matey!" << std::endl;
+    std::cout << "\n\nCongratulations matey!" << std::endl;
   }
   else
   {
-    std::cout << "You failed to escape. I guess it's Davey Jones' locker for ye.\n"
+    std::cout << "\n\nYou failed to escape. I guess it's Davey Jones' locker for ye.\n"
               << "Better luck next time!" << std::endl;
   }
 

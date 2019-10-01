@@ -10,6 +10,7 @@
 *********************************************************************/
 #include <string>
 #include <iostream>
+#include <vector>
 #include "space.hpp"
 
 //constructor for abstract class
@@ -134,4 +135,28 @@ bool Space::getActionRequired()
 void Space::setActionRequired(bool action)
 {
   this->actionRequired = action;
+  if (!action) {
+    setMessage("There is nothing to do in this space");
+  }
+}
+
+void Space::printList(std::vector<Tool*> list) {
+  if (!list.empty()) {
+    if (list[0]->getIsItem()){
+      std::cout << "\nThese are the items you have found: \n" << std::endl;
+    } else {
+        std::cout << "\nThese are the hints you have found: \n" << std::endl;
+    }
+    for (int i=0; i<list.size(); i++){
+      std::string output = std::to_string(i + 1) + ". "
+      + list[i]->getToolName();
+      std::cout << output << std::endl;
+    }
+    std::cout << "\nPlease enter the number of the option you would like to use: " << std::endl;
+  }
+}
+
+Space::~Space()
+{
+  //empty virtual destructor
 }

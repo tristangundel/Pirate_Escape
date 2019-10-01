@@ -10,6 +10,9 @@
 *********************************************************************/
 #include "doorSpace.hpp"
 #include <iostream>
+#include <vector>
+#include <cctype>
+#include "inputValidation.hpp"
 #include "tool.hpp"
 #include "item.hpp"
 #include "menu.hpp"
@@ -25,6 +28,27 @@ DoorSpace::DoorSpace()
   setRequiredTool(key->getToolName());
 }
 
+DoorSpace::DoorSpace(int choice)
+: ActionSpace()
+{
+  this->setActionRequired(true);
+  if (choice == 1)
+  {
+    this->setMessage("There be a gate here, but its locked and ye need a key to open it");
+    this->setType("Door");
+    Tool* key = new Item("Small Key");
+    this->setRequiredTool(key->getToolName());
+    this->setSuccessMessage("\nThe key fit, ye were able to open the gate! Make yer way down the hallway");
+  } else {
+    this->setMessage("There be another gate here, but its locked and ye need a key to open it");
+    this->setType("Door");
+    Tool* key = new Item("Large Key");
+    this->setRequiredTool(key->getToolName());
+    this->setSuccessMessage("\nYou did it! You escaped the brig!");
+  }
+}
+
+
 void DoorSpace::printSpace()
 {
   if (this->hasPlayer())
@@ -37,7 +61,7 @@ void DoorSpace::printSpace()
   }
 }
 
-void DoorSpace::spaceFunction(Queue *hints, Queue *items)
+void DoorSpace::spaceFunction(std::vector<Tool*>& hints, std::vector<Tool*>& items)
 {
   std::string menuOptions[2];
   menuOptions[0] = "Try to use an item!";
@@ -50,24 +74,32 @@ void DoorSpace::spaceFunction(Queue *hints, Queue *items)
     investigationMenu.makeSelection();
     if (investigationMenu.getSelection() == 1)
     {
-      if (!items->isEmpty())
+      if (!items.empty())
       {
-        int choice;
-        int count;
-        items->printQueue();
+        std::string choice;
+        this->printList(items);
         std::cin >> choice;
-        while (count < choice)
-        {
-          items->advanceHead();
+        while (!validateInput(choice, 1, items.size())){
+          std::cout << "That was not a valid option, try again." << std::endl;
+          std::cin.clear();
+          std::cin >> choice;
         }
-        Tool *tempPtr = items->getFront();
-        if (tempPtr->getToolName() == getRequiredTool());
+
+        Tool *tempPtr = items[std::stoi(choice) - 1];
+        if (tempPtr->getToolName() == this->getRequiredTool())
         {
-          std::cout << "You did it! You escaped the brig!"
-          << std::endl;
+          std::cout << this->getSuccessMessage() << std::endl;
           this->setActionRequired(false);
+          this->setMessage("There is nothing to do in this space");
+        } else {
+          std::cout << "This tool does not work here" << std::endl;
         }
       }
     }
   }
+}
+
+DoorSpace::~DoorSpace()
+{
+  delete this;
 }
