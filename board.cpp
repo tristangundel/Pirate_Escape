@@ -1,9 +1,9 @@
 /*********************************************************************
 ** Program name: PirateEscape
 ** Author: Tristan Gundel
-** Date: 12/04/2018
-** Description: This file is one of 19 files that together form a
-**              program with the capability of running a sinle player
+** Date: 09/19/2019
+** Description: This file is one of 23 files that together form a
+**              program with the capability of running a single player
 **              pirate themed escape room game where the user will
 **              move around the board picking up items and hints to
 **              use to get out of the room.
@@ -17,6 +17,7 @@
 #include "toolSpace.hpp"
 #include "parrotSpace.hpp"
 
+// constructor to build a Board object
 Board::Board()
 {
   for (int r=0; r<2; r++)
@@ -67,6 +68,7 @@ Board::Board()
   }
 }
 
+// function to move user's current place on the game board
 void Board::movePlayer(Menu *movingMenu)
 {
   bool hasMoved = false;
@@ -128,6 +130,7 @@ void Board::movePlayer(Menu *movingMenu)
   }
 }
 
+// function to find where the current player is on the game board
 Space* Board::findPlayer()
 {
   Space* tempPointer;
@@ -145,6 +148,7 @@ Space* Board::findPlayer()
   return nullptr;
 }
 
+// function to print the game board
 void Board::printBoard()
 {
   std::cout << "\n-";
@@ -183,6 +187,7 @@ void Board::printBoard()
   std::cout << "\n" << std::endl;
 }
 
+// function to get if the game is won, and return a boolean value
 bool Board::gameWon()
 {
   bool isOver = true;

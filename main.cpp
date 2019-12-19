@@ -2,8 +2,8 @@
 ** Program name: PirateEscape
 ** Author: Tristan Gundel
 ** Date: 09/19/2019
-** Description: This file is one of 19 files that together form a
-**              program with the capability of running a sinle player
+** Description: This file is one of 25 files that together form a
+**              program with the capability of running a single player
 **              pirate themed escape room game where the user will
 **              move around the board picking up items and hints to
 **              use to get out of the room.
@@ -33,20 +33,31 @@ int main()
   std::vector<Tool*> itemList;
   std::vector<Tool*> hintList;
 
+  //display introduction message to user about how the game will work
   introMessage(numOfSteps);
+
+  //initialize gameboard
   Board gameBoard;
+
+  // begin while loop to run main game loop until the game is won, or the user has run out of moves
   while(numOfSteps > 0 && !gameBoard.gameWon())
   {
+    // print game board to show user their current place
     gameBoard.printBoard();
+
+    // find current space and display the message/functions associated with it
     Space *currentPlace = gameBoard.findPlayer();
     currentPlace->spaceFunction(hintList, itemList);
+
+    // allow user to choose next move if latest action did not result in winning the game
     if (!gameBoard.gameWon()){
       gameBoard.movePlayer(directionMenuPtr);
     }
-    numOfSteps--;
+    numOfSteps--;         // decrease user's move counter
 
   }
 
+  // display Winning or Losing messages to the user
   if (gameBoard.gameWon())
   {
     std::cout << "\n\nCongratulations matey!" << std::endl;

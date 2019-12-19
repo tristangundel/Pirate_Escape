@@ -1,3 +1,13 @@
+/*********************************************************************
+** Program name: PirateEscape
+** Author: Tristan Gundel
+** Date: 09/19/2019
+** Description: This file is one of 23 files that together form a
+**              program with the capability of running a single player
+**              pirate themed escape room game where the user will
+**              move around the board picking up items and hints to
+**              use to get out of the room.
+*********************************************************************/
 #ifndef SPACE_HPP
 #define SPACE_HPP
 #include <string>
@@ -35,8 +45,8 @@ class Space
     virtual void printSpace();
     bool getActionRequired();
     void setActionRequired(bool);
+    // virtual function and deconstructor for the abstract class
     virtual void spaceFunction(std::vector<Tool*>& hints, std::vector<Tool*>& items) = 0;
-    void printList(std::vector<Tool*> list);
     virtual ~Space() = 0;
 };
 

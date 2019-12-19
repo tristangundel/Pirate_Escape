@@ -1,9 +1,9 @@
 /*********************************************************************
 ** Program name: PirateEscape
 ** Author: Tristan Gundel
-** Date: 12/04/2018
-** Description: This file is one of 21 files that together form a
-**              program with the capability of running a sinle player
+** Date: 09/19/2019
+** Description: This file is one of 23 files that together form a
+**              program with the capability of running a single player
 **              pirate themed escape room game where the user will
 **              move around the board picking up items and hints to
 **              use to get out of the room.
@@ -87,7 +87,7 @@ void Space::displayMessage()
   std::cout << this->message << std::endl;
 }
 
-//method to check if player is in space
+//function to check if player is in space
 bool Space::hasPlayer()
 {
   if (this->player)
@@ -100,23 +100,28 @@ bool Space::hasPlayer()
   }
 }
 
+// function to return type of Space object
 std::string Space::getSpaceType()
 {
   return this->type;
 }
 
+// function to set the player boolean variable
 void Space::setPlayerStatus(bool status)
 {
   this->player = status;
 }
 
+// public function for objects to set their type variable
 void Space::setType(std::string spaceType)
 {
   this->type = spaceType;
 }
 
+// function to print space (used in Board Class' print function)
 void Space::printSpace()
 {
+  // conditional print an X if space is user's current location
   if (hasPlayer())
   {
     std::cout << "   X   ";
@@ -127,6 +132,7 @@ void Space::printSpace()
   }
 }
 
+// function to return action required variable;
 bool Space::getActionRequired()
 {
   return this-> actionRequired;
@@ -140,22 +146,7 @@ void Space::setActionRequired(bool action)
   }
 }
 
-void Space::printList(std::vector<Tool*> list) {
-  if (!list.empty()) {
-    if (list[0]->getIsItem()){
-      std::cout << "\nThese are the items you have found: \n" << std::endl;
-    } else {
-        std::cout << "\nThese are the hints you have found: \n" << std::endl;
-    }
-    for (int i=0; i<list.size(); i++){
-      std::string output = std::to_string(i + 1) + ". "
-      + list[i]->getToolName();
-      std::cout << output << std::endl;
-    }
-    std::cout << "\nPlease enter the number of the option you would like to use: " << std::endl;
-  }
-}
-
+//empty virtual destructor
 Space::~Space()
 {
   //empty virtual destructor
