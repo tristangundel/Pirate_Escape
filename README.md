@@ -2,7 +2,7 @@
 A console based escape room game
 
 # Compilation
-A make file is included in the repository, to compile all neccessary object files and the final executable run the following command:
+A make file is included in the repository, to compile all necessary object files and the final executable run the following command:
 
 ```bash
 make
